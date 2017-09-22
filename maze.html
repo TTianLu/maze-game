@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<style type="text/css">
+@import url(mg.css);
+</style>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquery.hotkey.js"></script>
+<script type="text/javascript" src="mg.js"></script>
+<script type="text/javascript" src="mgs.js"></script>
+</head>
+
+<body>
+<div id="wrapper">
+	<div class="info">Current <span id="count" class="num">-</span>
+		<p>Rule: move the smile face from left top corner to the flag finish point.</p>
+	</div>
+	<div id="mg" class="mg" style="width: 400px; height: 400px;"><canvas width="400" height="400"></canvas><img src="finish.gif" class="finish-img"><div class="me" classname="me" style="width: 20px; height: 20px;"><div class="inform" classname="inform" style="display: block;"><p>Hint: you can use the arrow keys(left, up, right, and down) to move the smile face.</p></div><img src="me.gif"></div></div>
+	<div id="mg_set">
+		<strong>Setting:</strong>
+		Wide: <input type="text" id="mg_width" value="20" size="4" maxlength="3" />
+		Hight: <input type="text" id="mg_height" value="20" size="4" maxlength="3" />
+		<input type="button" value=" build new one " onclick="new_mg();" />
+	</div>
+</div>
+
+<script type="text/javascript">
+function new_mg() {
+	var w = parseInt(document.getElementById("mg_width").value) || 20,
+		h = parseInt(document.getElementById("mg_height").value) || 20;
+	mg.set({width: w, height: h}).create().show();
+	document.getElementById("mg_width").value = w;
+	document.getElementById("mg_height").value = h;
+//	count();
+}
+
+function count() {
+	$.get("/count/maze/", {
+			r: Math.random()
+		}, function (r) {
+			r = r.replace(/[\r\n\s]/g, "");
+			if (r.match(/^\d+$/))
+				$("#count").html(r);
+		});
+}
+
+function mark(h, ob) {
+	mg.me.setMark(h, ob.checked);
+}
+
+var mg = new MG("mg");
+new_mg();
+
+</script>
+
+</body>
+</html>
